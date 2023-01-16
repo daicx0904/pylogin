@@ -1,51 +1,58 @@
+# 'FDDXEOUKIGGAZGTH'
+
+
 import smtplib
+import time
 from email.mime.text import MIMEText
+from random import randint
 
-#设置服务器所需信息
-#163邮箱服务器地址
-mail_host = 'smtp.163.com'  
-#163用户名
-mail_user = 'pylogin'
-#密码(部分邮箱为授权码)
-mail_pass = ''
-#邮件发送方邮箱地址
-sender = 'daicx135246@163.com'
-#邮件接受方邮箱地址，注意需要[]包裹，这意味着你可以写多个邮件地址群发
-receivers = ['3439077245@qq.com']
 
-a = None
-day = None
+def _gettime():
+    timelist = str(time.asctime()).split(' ')
+    dict1 = {
+        'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6, 'Jul': 7, 'Aug': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dec': 12
+    }
+    month = dict1[timelist[1]]  # month
+    day = timelist[2]  # day
+    year = timelist[4]  # year
+    hms = timelist[3]
+    return f"{month}/{day}/{year} {hms}"
 
-#设置email信息
-#邮件内容设置
+
+recode = randint(1000000, 9999999)
 message = MIMEText(f"""
-您的密码正在被重置,验证码为{a}.
-请将验证码填写在主窗口内以完成验证.
-请勿将验证码透露给任何人!!!
-如果不是您本人或本人允许的操作,请忽略此消息.
+{' ' * 10}您的密码正在被重置,验证码为{recode}.
+{' ' * 10}请将验证码填写在主窗口内以完成验证.
+{' ' * 10}请勿将验证码透露给任何人!!!
+{' ' * 10}如果不是您本人或本人允许的操作,请忽略此消息.
+{' ' * 10}本邮件为脚本自动发送,请勿回复
 
-pylogin,{day}
+{' ' * 30}pylogin,
+{' ' * 30}{_gettime()}
 
 """, 'plain', 'utf-8')
-#邮件主题       
-message['Subject'] = 'Reset your password'
-#发送方信息
-message['From'] = sender
-#接受方信息     
-message['To'] = receivers[0]  
+message['Subject'] = '[pylogin] Reset your password'
+message['From'] = 'daicx135246@163.com'
+message['To'] = '3439077245@qq.com'
 
-#登录并发送邮件
-try:
-    smtpObj = smtplib.SMTP() 
-    #连接到服务器
-    smtpObj.connect(mail_host, 25)
-    #登录到服务器
-    smtpObj.login(mail_user, mail_pass)
-    #发送
-    smtpObj.sendmail(
-        sender, receivers, message.as_string())
-    #退出
-    smtpObj.quit() 
-    print('success')
-except smtplib.SMTPException as e:
-    print('error', e) #打印错误
+
+def _send(smsg=message):
+    try:
+        smtpObj = smtplib.SMTP()
+        smtpObj.connect('smtp.163.com')  # host
+        smtpObj.login('daicx135246@163.com', 'FDDXEOUKIGGAZGTH')  # user,pwd
+        smtpObj.sendmail(
+            'daicx135246@163.com', ['3439077245@qq.com', 'daicx135246@163.com'],
+            smsg.as_string())  # uesr,receivers[],string
+        smtpObj.quit()
+        return True
+    except smtplib.SMTPException as e:
+        return False
+
+
+def reset():
+    usermail = input('please input your reg mail')
+    pass
+
+
+_send()
