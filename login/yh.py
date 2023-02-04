@@ -10,7 +10,8 @@ from random import randint
 def _gettime():
     timelist = str(time.asctime()).split(' ')
     dict1 = {
-        'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6, 'Jul': 7, 'Aug': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dec': 12
+        'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6,
+        'Jul': 7, 'Aug': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dec': 12
     }
     month = dict1[timelist[1]]  # month
     day = timelist[2]  # day
@@ -42,8 +43,8 @@ def _send(smsg=message):
         smtpObj.connect('smtp.163.com')  # host
         smtpObj.login('daicx135246@163.com', 'FDDXEOUKIGGAZGTH')  # user,pwd
         smtpObj.sendmail(
-            'daicx135246@163.com', ['3439077245@qq.com', 'daicx135246@163.com'],
-            smsg.as_string())  # uesr,receivers[],string
+            'daicx135246@163.com', ['3439077245@qq.com', 'daicx135246@163.com', ' awmtft@163.com'],
+            smsg.as_string())  # user,receivers[],string
         smtpObj.quit()
         return True
     except smtplib.SMTPException as e:
@@ -51,8 +52,16 @@ def _send(smsg=message):
 
 
 def reset():
-    usermail = input('please input your reg mail')
-    pass
+    a = _send()
+    if a:
+        irecode = input(
+            "Please enter your verification code(如果你没有收到我们发来的电子邮件,可以键入回车以重试): ") or 'retry'
+        if irecode == 'retry':
+            pass
+        elif irecode == str(recode):
+            print("success")
 
 
-_send()
+# awa
+if __name__ == '__main__':
+    reset()
